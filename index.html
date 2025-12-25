@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Media Downloader - Download TikTok, Instagram, YouTube Videos</title>
+    <meta name="description"
+        content="Free Universal Media Downloader. Save videos from TikTok (no watermark), Instagram Reels, and YouTube in high quality 1080p/4k. Fast, free, and secure.">
+    <meta name="keywords"
+        content="media downloader, tiktok downloader, instagram downloader, youtube downloader, video saver, no watermark, free video downloader">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="background-glow"></div>
+
+    <main class="container">
+        <header class="hero">
+            <h1 class="animate-fade-down">Media <span class="gradient-text">Downloader</span></h1>
+            <p class="subtitle animate-fade-down delay-1">Paste a link from TikTok, Instagram, or YouTube to get
+                started.</p>
+        </header>
+
+        <section class="downloader-section animate-fade-up delay-2">
+            <div class="input-group glass-card">
+                <i class="fa-solid fa-link input-icon"></i>
+                <input type="url" id="urlInput" placeholder="Paste video URL here..." required autocomplete="off">
+                <button id="downloadBtn" class="btn-primary">
+                    <span class="btn-text">Download</span>
+                    <i class="fa-solid fa-bolt btn-icon"></i>
+                    <div class="loader hidden"></div>
+                </button>
+            </div>
+            <p id="errorMsg" class="error-message hidden"><i class="fa-solid fa-circle-exclamation"></i> <span>Invalid
+                    URL. Please try again.</span></p>
+        </section>
+
+        <section id="resultSection" class="result-section hidden">
+            <!-- Content injected by JS -->
+        </section>
+    </main>
+
+    <footer class="animate-fade-in delay-3">
+        <p>&copy; 2025 Universal Media Downloader. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="about-us.html"><i class="fa-solid fa-circle-info"></i> About Us</a>
+            <a href="youtube.html"><i class="fa-brands fa-youtube"></i> YouTube</a>
+            <a href="blogger.html"><i class="fa-solid fa-blog"></i> Blog</a>
+            <a href="contact-us.html"><i class="fa-solid fa-envelope"></i> Contact Us</a>
+            <a href="disclaimer.html"><i class="fa-solid fa-file-shield"></i> Disclaimer</a>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Universal Media Downloader</title>
+    <meta name="description" content="Contact the Universal Media Downloader team for support, feedback, or inquiries.">
+    <meta name="keywords" content="contact us, support, feedback, universal media downloader email">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="background-glow"></div>
+
+    <main class="container">
+        <header class="hero">
+            <h1 class="animate-fade-down">Contact <span class="gradient-text">Us</span></h1>
+            <p class="subtitle animate-fade-down delay-1">We'd love to hear from you. Send us a message below.</p>
+        </header>
+
+        <section class="glass-card animate-fade-up delay-2"
+            style="flex-direction: column; align-items: stretch; gap: 1.5rem; padding: 2rem;">
+            <div class="input-group" style="flex-direction: column; width: 100%;">
+                <label for="name" style="color: #94a3b8; margin-bottom: 0.5rem; margin-left: 0.5rem;">Name</label>
+                <div
+                    style="display: flex; background: rgba(15, 23, 42, 0.6); border-radius: 12px; align-items: center; border: 1px solid rgba(255,255,255,0.1);">
+                    <i class="fa-regular fa-user input-icon"></i>
+                    <input type="text" id="name" placeholder="Your Name">
+                </div>
+            </div>
+
+            <div class="input-group" style="flex-direction: column; width: 100%;">
+                <label for="email" style="color: #94a3b8; margin-bottom: 0.5rem; margin-left: 0.5rem;">Email</label>
+                <div
+                    style="display: flex; background: rgba(15, 23, 42, 0.6); border-radius: 12px; align-items: center; border: 1px solid rgba(255,255,255,0.1);">
+                    <i class="fa-regular fa-envelope input-icon"></i>
+                    <input type="email" id="email" placeholder="your@email.com">
+                </div>
+            </div>
+
+            <div class="input-group" style="flex-direction: column; width: 100%;">
+                <label for="message" style="color: #94a3b8; margin-bottom: 0.5rem; margin-left: 0.5rem;">Message</label>
+                <div
+                    style="display: flex; background: rgba(15, 23, 42, 0.6); border-radius: 12px; align-items: flex-start; border: 1px solid rgba(255,255,255,0.1);">
+                    <i class="fa-regular fa-message input-icon" style="margin-top: 1rem;"></i>
+                    <textarea id="message" rows="4" placeholder="How can we help?"
+                        style="flex: 1; background: transparent; border: none; color: white; font-size: 1rem; padding: 1rem; outline: none; resize: vertical; font-family: 'Outfit', sans-serif;"></textarea>
+                </div>
+            </div>
+
+            <button class="btn-primary" style="justify-content: center; width: 100%; margin-top: 1rem;">
+                <span class="btn-text">Send Message</span>
+                <i class="fa-regular fa-paper-plane btn-icon"></i>
+            </button>
+        </section>
+
+        <div class="contact-details animate-fade-up delay-3" style="text-align: center;">
+            <p style="color: #94a3b8;">Or email us directly at:</p>
+            <a href="mailto:support@mediadownloader.com" class="gradient-text"
+                style="font-weight: 600; text-decoration: none; font-size: 1.2rem;">support@mediadownloader.com</a>
+        </div>
+
+        <div class="animate-fade-up delay-3" style="width: 100%; display: flex; justify-content: center;">
+            <a href="index.html" class="btn-primary"
+                style="text-decoration: none; display: inline-flex; background: rgba(255,255,255,0.1);">
+                <i class="fa-solid fa-arrow-left btn-icon"></i>
+                <span class="btn-text">Back to Home</span>
+            </a>
+        </div>
+    </main>
+
+    <footer class="animate-fade-in delay-3">
+        <p>&copy; 2025 Universal Media Downloader. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="index.html"><i class="fa-solid fa-home"></i> Home</a>
+            <a href="about-us.html"><i class="fa-solid fa-circle-info"></i> About Us</a>
+            <a href="youtube.html"><i class="fa-brands fa-youtube"></i> YouTube</a>
+            <a href="blogger.html"><i class="fa-solid fa-blog"></i> Blog</a>
+            <a href="disclaimer.html"><i class="fa-solid fa-file-shield"></i> Disclaimer</a>
+        </div>
+    </footer>
+</body>
+
+</html>
