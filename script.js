@@ -142,14 +142,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const downloadList = document.createElement('div');
         downloadList.className = 'download-list';
 
+        const videos = [];
+        const audios = [];
+
         if (data.medias) {
             data.medias.forEach(media => {
                 if (!media.url) return;
 
+                const isAudio = (media.type === 'audio' || media.extension === 'mp3' || media.extension === 'm4a' || media.is_audio);
+                const isVideo = (media.type === 'video' || media.extension === 'mp4' || media.extension === 'webm');
+                const hasAudio = Boolean(media.has_audio || media.audioAvailable || media.audio || media.withAudio);
+
+                if (isAudio) audios.push(media);
+                else if (isVideo) videos.push(media);
+
                 const btn = document.createElement('a');
                 btn.href = media.url;
-                // Determine class based on type (video/audio)
-                const isAudio = (media.type === 'audio' || media.extension === 'mp3' || media.is_audio);
                 btn.className = `dl-btn ${isAudio ? 'audio-btn' : 'video-btn'}`;
                 btn.target = '_blank';
                 btn.rel = 'noopener noreferrer';
@@ -168,6 +176,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 quality.className = 'btn-quality';
                 quality.textContent = media.quality || (isAudio ? 'Audio' : 'Video');
                 details.appendChild(quality);
+
+                const tag = document.createElement('span');
+                tag.className = 'btn-tag';
+                tag.textContent = isAudio ? 'Audio only' : hasAudio ? 'Video+Audio' : 'Video (no audio)';
+                details.appendChild(tag);
 
                 let sizeText = '';
                 if (media.size) sizeText = formatSize(media.size);
@@ -192,6 +205,58 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        // If we have a video-only and an audio-only track, offer a merged download (serverless).
+        const bestVideo = pickBestVideo(videos);
+        const bestAudio = pickBestAudio(audios);
+        if (bestVideo && bestAudio) {
+            const mergeBtn = document.createElement('button');
+            mergeBtn.type = 'button';
+            mergeBtn.className = 'dl-btn merge-btn';
+
+            const btnContent = document.createElement('div');
+            btnContent.className = 'btn-content';
+
+            const icon = document.createElement('i');
+            icon.className = 'fa-solid fa-layer-group';
+            btnContent.appendChild(icon);
+
+            const details = document.createElement('div');
+            details.className = 'btn-details';
+
+            const quality = document.createElement('span');
+            quality.className = 'btn-quality';
+            quality.textContent = `${bestVideo.quality || 'HD'} merged`;
+            details.appendChild(quality);
+
+            const size = document.createElement('span');
+            size.className = 'btn-size';
+            size.textContent = 'Merge video+audio (server)';
+            details.appendChild(size);
+
+            btnContent.appendChild(details);
+            mergeBtn.appendChild(btnContent);
+
+            const dlIcon = document.createElement('i');
+            dlIcon.className = 'fa-solid fa-download download-icon';
+            mergeBtn.appendChild(dlIcon);
+
+            mergeBtn.addEventListener('click', async () => {
+                mergeBtn.disabled = true;
+                quality.textContent = 'Merging...';
+                try {
+                    await mergeAndDownload(data.title, bestVideo.url, bestAudio.url);
+                    quality.textContent = `${bestVideo.quality || 'HD'} merged`;
+                } catch (err) {
+                    alert(`Merge failed: ${err.message}`);
+                    quality.textContent = 'Merge failed';
+                } finally {
+                    mergeBtn.disabled = false;
+                }
+            });
+
+            downloadList.prepend(mergeBtn);
+        }
+
         infoContainer.appendChild(downloadList);
         card.appendChild(infoContainer);
         resultSection.appendChild(card);
@@ -204,5 +269,52 @@ document.addEventListener('DOMContentLoaded', () => {
         if (bytes === 0) return '0 Byte';
         const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
         return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+    }
+
+    function pickBestVideo(videos = []) {
+        if (!videos.length) return null;
+        return [...videos].sort((a, b) => parseQuality(b.quality) - parseQuality(a.quality))[0];
+    }
+
+    function pickBestAudio(audios = []) {
+        if (!audios.length) return null;
+        return [...audios].sort((a, b) => parseAudioQuality(b.quality) - parseAudioQuality(a.quality))[0];
+    }
+
+    function parseQuality(q = '') {
+        const match = q.match(/(\d{3,4})p/i);
+        return match ? parseInt(match[1], 10) : 0;
+    }
+
+    function parseAudioQuality(q = '') {
+        const match = q.match(/(\d{2,3})\s?kb/i);
+        return match ? parseInt(match[1], 10) : 0;
+    }
+
+    async function mergeAndDownload(title, videoUrl, audioUrl) {
+        const response = await fetch('/api/merge', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title, videoUrl, audioUrl })
+        });
+
+        if (!response.ok) {
+            const text = await response.text();
+            throw new Error(text || 'Merge failed');
+        }
+
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${sanitizeFilename(title)}.mp4`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+    }
+
+    function sanitizeFilename(name = 'video') {
+        return name.replace(/[^a-z0-9\-_.]+/gi, '-').replace(/-+/g, '-').replace(/^[-.]+|[-.]+$/g, '') || 'video';
     }
 });
